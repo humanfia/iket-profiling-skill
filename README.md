@@ -4,8 +4,6 @@
 >
 > - Official guide: https://docs.nvidia.com/cutlass/latest/media/docs/pythonDSL/cute_dsl_general/iket_profiling.html
 > - Official example: `examples/python/CuTeDSL/dsl_tutorials/fp16_gemm_4_iket.py` in the [CUTLASS repo](https://github.com/NVIDIA/cutlass)
->
-> 本仓库不是新东西，只是把 NVIDIA 官方 IKET profiling 文档/示例总结成一个 agent skill，方便 Claude Code / Codex 等 coding agent 在开发和调优 CuTe DSL kernel 时按需加载。一切以官方文档为准。
 
 ## What it is
 
