@@ -1,32 +1,65 @@
 # iket-profiling-skill
 
-> **This is NOT new work.** This repo is just a condensed summary of NVIDIA's official CUTLASS documentation on IKET profiling for CuTe DSL kernels, repackaged as an agent skill. All technical content comes from the official docs — treat them as the source of truth:
->
-> - Official guide: https://docs.nvidia.com/cutlass/latest/media/docs/pythonDSL/cute_dsl_general/iket_profiling.html
-> - Official example: `examples/python/CuTeDSL/dsl_tutorials/fp16_gemm_4_iket.py` in the [CUTLASS repo](https://github.com/NVIDIA/cutlass)
+An [Agent Skill](https://agentskills.io) for profiling inside CuTe DSL kernels with IKET
+(In-Kernel Event Tracing) and the `run-iket` profiler.
 
-## What it is
+This is not new work. The skill is a condensed summary of NVIDIA's official CUTLASS guide,
+[IKET Profiling](https://docs.nvidia.com/cutlass/latest/media/docs/pythonDSL/guides/iket_profiling.html),
+written for coding agents. The guide is the source of truth; where they differ, follow the guide.
+IKET is experimental, and its API and output may change.
 
-A single [`SKILL.md`](SKILL.md) in the open [Agent Skills](https://agentskills.io) format (YAML frontmatter + markdown). It activates when an agent is developing a CuTe DSL (`cutlass.cute`) kernel and tuning its performance, and covers: the IKET API (`mark` / `range_push`·`range_pop` / `range_start`·`range_end` / `sentinel_token`), the `run-iket` profiler workflow, instrumentation rules, common patterns (async issue vs. wait timing, cross-iteration ranges), output formats (Perfetto / JSON), limitations, and troubleshooting — all per the official guide.
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Install
 
-**Claude Code** (personal, all projects):
+The skill is the [`skills/iket-profiling/`](skills/iket-profiling) directory. Install it with
+the [skills](https://github.com/vercel-labs/skills) CLI:
 
-```bash
-git clone git@github.com:humanfia/iket-profiling-skill.git ~/.claude/skills/iket-profiling
+```sh
+npx skills add humanfia/iket-profiling-skill
 ```
 
-or into a project: `.claude/skills/iket-profiling/`.
+or copy the directory into your agent's skills directory, for example for Claude Code:
 
-**Codex CLI** (versions supporting the Agent Skills standard):
-
-```bash
-git clone git@github.com:humanfia/iket-profiling-skill.git ~/.codex/skills/iket-profiling
+```sh
+git clone https://github.com/humanfia/iket-profiling-skill.git
+cp -r iket-profiling-skill/skills/iket-profiling ~/.claude/skills/
 ```
 
-If your agent doesn't support skills, just point it at `SKILL.md` (e.g. reference it from `AGENTS.md`).
+The directory name must stay `iket-profiling`, the skill's `name`.
 
-## Attribution
+## Usage
 
-IKET, CuTe DSL, and CUTLASS are NVIDIA projects. This summary was last checked against the docs in August 2026; IKET is experimental and its API/output may change — always defer to the official documentation.
+The agent loads the skill when you develop or tune a CuTe DSL (`cutlass.cute`) kernel and ask
+where its time goes inside the kernel: phase timelines, TMA/MMA activity, or pipeline waits. It
+covers the `cutlass.cute.experimental.iket` API, the `run-iket` workflow, instrumentation rules,
+the Perfetto and JSON output, limitations, and troubleshooting. You need an `nvidia-cutlass-dsl`
+installation that includes `run-iket` and an SM90 or newer GPU.
+
+## Maintainers
+
+[@DongyunZou](https://github.com/DongyunZou)
+
+## Contributing
+
+Issues and pull requests are welcome; see the
+[contributing guide](https://github.com/humanfia/.github/blob/main/CONTRIBUTING.md). Every
+statement in the skill must be backed by the official guide. Check changes with
+[skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref):
+
+```sh
+uvx --from "git+https://github.com/agentskills/agentskills#subdirectory=skills-ref" \
+  skills-ref validate skills/iket-profiling
+```
+
+## License
+
+[Apache-2.0](LICENSE) © Humanfia, for the text of this repository. The skill summarises and
+adapts NVIDIA's CUTLASS documentation, which is © NVIDIA Corporation under the BSD-3-Clause
+license; see [NOTICE](NOTICE). IKET, CuTe DSL, and CUTLASS are NVIDIA projects.
